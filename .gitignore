@@ -1,0 +1,39 @@
+# Python and Django
+*.pyc
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+
+# Virtual environment
+venv_info_token_bot/
+env/
+ENV/
+
+# IDE specific files
+.vscode/
+.idea/
+
+# PyCharm
+*.iml
+*.iws
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/dictionaries
+.idea/vcs.xml
+.idea/jsLibraryMappings.xml
+
+
+# Исключение файлов настроек проекта
+*.iml
+*.ipr
+*.iws
+
+# Исключение файлов логов
+*.log
+
+# Исключение файлов конфигурации Git
+.git/
