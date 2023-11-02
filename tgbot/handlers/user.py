@@ -13,6 +13,5 @@ async def user_start(message: Message):
 
 @user_router.message(F.text)
 async def user_get_token(message: Message):
-    url = "https://dexscreener.com/solana/7qbrf6ysyguluvs6y1q64bdvrfe4zcuuz1jrdovnujnm"
-    await get_info_token(url)
-    await message.reply(message.text + " - твой токен")
+    await get_info_token(message.text)
+    # await message.reply(message.text)
