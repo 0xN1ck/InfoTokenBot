@@ -13,7 +13,7 @@ async def get_response(url):
         "url": url,
         "maxTimeout": 60000
     }
-    response = requests.post('http://172.25.0.2:8191/v1', headers={'Content-Type': 'application/json'}, json=post_body)
+    response = requests.post('http://flaresolverr:8191/v1', headers={'Content-Type': 'application/json'}, json=post_body)
 
     response = json.loads(response.text)
     return response

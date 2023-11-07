@@ -11,14 +11,14 @@ services:
       - TZ=Europe/London
     ports:
       - "${PORT:-8191}:8191"
-    restart: unless-stopped
+    restart: always
   bot:
     build: ./
     command: >
       python bot.py
     volumes:
       - ./:/InfoTokenBot
-    restart: unless-stopped
+    restart: always
     env_file:
       - ./.env
     stdin_open: true
