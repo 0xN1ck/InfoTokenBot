@@ -12,3 +12,15 @@ services:
     ports:
       - "${PORT:-8191}:8191"
     restart: unless-stopped
+  bot:
+    build: ./
+    command: >
+      python bot.py
+    volumes:
+      - ./:/InfoTokenBot
+    restart: unless-stopped
+    env_file:
+      - ./.env
+    stdin_open: true
+    depends_on:
+      - flaresolverr

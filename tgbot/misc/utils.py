@@ -1,4 +1,3 @@
-from pprint import pprint
 from numpy import format_float_positional
 from dexscreener import DexscreenerClient
 from bs4 import BeautifulSoup
@@ -7,13 +6,6 @@ import re
 import requests
 import json
 
-# from etherscan import Etherscan
-# import etherscan.tokens as token_lib
-from etherscan.contracts import Contract
-
-# 0x1b4c961a58578b5271f4d8ccfb907f0a498dce9f
-TOKEN_ETHERSCAN = 'JKABW46GB1CSXXC413S9KP48WT8VU728X5'
-
 
 async def get_response(url):
     post_body = {
@@ -21,7 +13,7 @@ async def get_response(url):
         "url": url,
         "maxTimeout": 60000
     }
-    response = requests.post('http://localhost:8191/v1', headers={'Content-Type': 'application/json'}, json=post_body)
+    response = requests.post('http://172.25.0.2:8191/v1', headers={'Content-Type': 'application/json'}, json=post_body)
 
     response = json.loads(response.text)
     return response
@@ -95,15 +87,8 @@ async def get_all_info_token(token: str):
 
     return results
 
-    # api = Contract(address=info_dex['pair'].base_token.address, api_key=TOKEN_ETHERSCAN)
-    # sourcecode = api.get_sourcecode()
-    # # TODO: make this return something pretty
-    # pprint(sourcecode)
-
 
 async def get_info_from_dexscreener(token: str):
-    # token = "0x1B4c961a58578B5271f4D8CcFb907f0a498DCE9F"
-    # token = "0xaf3df2cc9f0227b9e45543df3d3770f450e80db8" # kitty
     client = DexscreenerClient()
     pair = client.get_token_pair("ethereum", token)
     print(pair)
@@ -129,7 +114,6 @@ async def get_info_from_etherscan(token: str):
     scraper = cloudscraper.create_scraper(delay=10, browser={'custom': 'ScraperBot/1.0', })
     url = f"https://etherscan.io/token/{token}#balances"
     response = scraper.get(url)
-    # response = await get_response(url)
     soup = BeautifulSoup(response.text, 'lxml')
     holders = (soup.
                find("div", {"id": "ContentPlaceHolder1_tr_tokenHolders"}).
@@ -161,7 +145,6 @@ async def get_info_from_tokensniffer(token: str):
     for element in table:
         states = element.find_all('td', {'class': 'Home_mono2__1lWiC'})
         for state in states:
-            # print(state.text)
             if state.text.strip() == "Adequate initial liquidity":
                 results["liq_start"] = state.next.next.text
                 results["liq_start"] = await replace_symbol_html(results["liq_start"])
@@ -176,25 +159,3 @@ async def get_info_from_tokensniffer(token: str):
 
     return results
 
-    # keys = ['liq_start', 'lock']
-    # values = [i.text if i else 'Информация отсутствует' for i in table.find_all('div', {'class': 'Home_note__1UGB7'})[1:]]
-    # try:
-    #     liq_start = table.find_all('div', {'class': 'Home_note__1UGB7'})[-2].text if table.find_all('div', {'class': 'Home_note__1UGB7'})[-2] else 'Информация отсутствует'
-    # except:
-    #     liq_start = 'Информация отсутствует'
-    # try:
-    #     lock = table.find_all('div', {'class': 'Home_note__1UGB7'})[-1].text if table.find_all('div', {'class': 'Home_note__1UGB7'})[-1] else 'Информация отсутствует'
-    # except:
-    #     lock = 'Информация отсутствует'
-    # pattern = r' in Unicrypt  until \d{1,2} \w{3} \d{4} \d{2}:\d{2}:\d{2} GMT'
-    # lock = re.sub(pattern, '', lock)
-    # # results = dict(zip(keys, [re.sub(pattern, '', value) for value in values]))
-
-
-
-
-    # results = {
-    #     "liq_start": liq_start,
-    #     "lock": lock
-    # }
-    # return results
